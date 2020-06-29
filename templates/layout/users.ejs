@@ -1,0 +1,108 @@
+<%- body -%>
+<table class="table">
+	<thead>
+		<tr>
+			<% for (var key in user) { %>
+			<% for (var val in user[key]) { %>
+				<th scope="col">
+					<%= val %>
+				</th>
+			<% } %>
+			<% if(editable) { %>
+				<th scope="col">
+					Управление
+				</th>
+			<% } break; } %>
+		</tr>
+	</thead>
+	<tbody>
+		<% for (var key in user) { %>
+	      	<tr>
+	      		<% for (var val in user[key]) { %>
+	      			<td class="pt-3 pb-3">
+	     				<div><%= user[key][val] %></div>
+					</td>
+	      		<% } %>
+				<% if(editable) { %>
+					<td role="" class="j-se a-s">
+						<button class="btn btn-sm btn-block btn-outline-secondary" onclick="openForm(`<%= user[key]['login']%>`, 'exclude')">
+							Исключить
+						</button>
+						<button class="btn btn-sm btn-block btn-outline-secondary" onclick="openForm(`<%= user[key]['login']%>`, 'confExclude')">
+							Х
+						</button>
+					</td>
+			<% } %>
+	      </tr>
+	    <% }; %>		
+	</tbody>
+</table>
+
+<section id="floatUserForm" class="floatForm pd-0 bg-white container text-center shadow-lg mh-200">
+	<div class="pb-3 pl-2 pr-2">
+		<div class="input-group mb-3">
+		  <div class="input-group-prepend">
+		    <span class="input-group-text">Кому</span>
+		  </div>
+		  <input type="text" class="form-control" id="to_place" placeholder="Должность" aria-label="">
+		  <input type="text" class="form-control" id="to_fio" placeholder="ФИО" aria-label="">
+		</div>
+		<div class="input-group">
+		  <div class="input-group-prepend">
+		    <span class="input-group-text">По причине</span>
+		  </div>
+		  <textarea class="form-control" id="reason" aria-label="По причине"></textarea>
+		</div>
+		<div class="input-group mb-3 pt-3">
+		  <div class="input-group-prepend">
+		    <span class="input-group-text">Ваша должность</span>
+		  </div>
+		  <input type="text" class="form-control" id="my_place" placeholder="Должность" aria-label="">
+		</div>
+		<button class="btn btn-lg btn-dark btn-block shadow-sm mt-1" onclick="send(event)">Сгенерировать документ</button>
+	</div>
+</section>
+
+<script type="text/javascript">
+	var login = '';
+
+	var openForm = function(loginUser, action) {
+		login = loginUser;
+		if (action == 'confExclude') {
+			$.ajax({
+				url: "/kurs/confExclude",
+				method: "post",
+				data: {
+					"login" : login,
+					"kurs" : "<%= kurs %>"
+				},
+				complete: function(res) {
+					backFromKurs("<%= kurs %>");
+				}
+			})
+		} else {
+			formTimer = setTimeout(() => {
+				$("#floatUserForm")[0].setAttribute('data-show', '');
+				hideOnClickOutside($("#floatUserForm")[0]);
+			}, 200);
+		}
+	}
+
+	var send = function(){
+		$.ajax({
+			url: "/kurs/exclude",
+			method: "post",
+			data: {
+				"login" : login,
+				"kurs" : "<%= kurs %>",
+				"reason" : reason.value,
+				"lead_place" : to_place.value,
+				"director_name" : to_fio.value,
+				"user_place" : my_place.value
+			},
+			complete: function(res) {
+				window.location.href = '/file/' + res.responseText;
+			}
+		})
+	}
+</script>

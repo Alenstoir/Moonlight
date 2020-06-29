@@ -1,0 +1,226 @@
+<script type="text/javascript">
+	var popperInstance = null;
+	var buttons = [];
+	var currentButton = null;
+</script>
+<%
+	highlight = false;
+	function redDate(i){
+		return (i < 10) ? "0" + i : "" + i;
+	}
+	var kursId;
+	for(item in data) {
+		kursId = data[item].id_kurs;
+		break;
+	}
+%>
+<div class="row">
+	<div class="m-a"> <%- title.title %> </div>	
+	<div class="form-user to-right">
+		<button class="btn btn-sm btn-block btn-outline-secondary" onclick="control(null, 'clearSide')">
+			Вернуться
+		</button>
+	</div>
+</div>
+
+<table class="table">
+	<thead>
+		<tr class="">
+			<th class="simpleUser" scope="col">
+				Слушатель
+			</th>
+			<% for (item in data) { %>
+				<% if(highlight) { %>
+					<% highlight = !highlight %>
+						<th scope="col" class="vertical pl-2 pr-2">
+					<% } else { %>
+						<% highlight = !highlight %>
+						<th scope="col" class="highlighted vertical pl-2 pr-2">
+					<% } %>
+					<div class="vertical"><%- data[item].date.getDate() %>.<%- redDate(data[item].date.getMonth()+1) %> - <%- data[item].date.getHours() %>:<%- data[item].date.getMinutes() %></div>
+				</th>
+			<% } highlight = false %>
+			<th scope="col" class="filler">	</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% for (item in listeners) { %>
+	      	<tr>
+	  			<td class="simpleUser">
+	  				<%- listeners[item].fio %>
+				</td>
+				<% for (val in data) { %>
+					<% if(highlight) { %>
+						<% highlight = !highlight %>
+							<td role="" class="simpleControl">
+						<% } else { %>
+							<% highlight = !highlight %>
+							<td role="" class="simpleControl highlighted">
+						<% } %>
+						<div class="simpleButton simpleForm" role="button" type="text" onclick="" id="<%- listeners[item].id %>|<%- data[val].id %>">
+							<% if(typeof data[val].data[item] !== 'undefined') { %>
+								<% if(data[val].data[item].mark) { %>
+									<%- data[val].data[item].mark %>
+								<% } else if(data[val].data[item].presense) { %>
+									+
+								<% } else { %>
+									-
+								<% } %>
+							<% } else { %>
+								-
+							<% } %>
+						</div>
+						<% if(level == 2) { %>
+							<script type="text/javascript">
+								buttons.push(document.getElementById("<%- listeners[item].id %>|<%- data[val].id %>"));
+							</script>
+						<% } %>
+					</td>
+				<% } %>
+				<td role="" class="filter">
+				</td>
+	      	</tr>
+		<% } %>
+	</tbody>
+</table>
+<% if(level == 2 || level == 0) { %>
+	<button class="btn btn-lg btn-dark btn-block shadow-sm mt-1" onclick="openForm(event)">Новое занятие</button>
+<% } %>
+
+
+<section id="floatForm" class="floatForm pd-0 bg-white container text-center shadow-lg mh-200">
+	<div class="pt-3 pb-3 pl-2 pr-2">
+		<div class="input-group mb-3">
+		  <div class="input-group-prepend">
+		    <span class="input-group-text" id="inputGroupFileAddon01">Загрузка</span>
+		  </div>
+		  <div class="custom-file">
+		    <input type="file" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01">
+		    <label class="custom-file-label" for="inputGroupFile01">Выберите файл для урока</label>
+		  </div>
+		</div>
+		<button class="btn btn-lg btn-dark btn-block shadow-sm mt-1" onclick="create(event)">Создать</button>
+	</div>
+</section>
+<div class="popsup simpleForm" id="popupManage" role="tooltip">
+	<div class="col flex up f-b">
+		sample
+		<br>
+		text
+	</div>
+	<div class="arrow" data-popper-arrow></div>
+</div>
+<script type="text/javascript">
+
+	var openForm = function() {
+		formTimer = setTimeout(() => {
+			$("#floatForm")[0].setAttribute('data-show', '');
+			hideOnClickOutside($("#floatForm")[0]);
+		}, 400);
+	}
+
+	var loadInfo = function(btn){
+		currentButton = btn;
+		$("#popupManage > .col").empty();
+		popperInstance = Popper.createPopper(btn, $("#popupManage")[0], {
+			placement: 'right',
+			modifiers: [
+				{
+					name: 'offset',
+					options:  {
+						offset: ({ placement, reference, popper }) => {
+				          	if (placement === 'right') {
+				            	return [(popper.height/2)-(45/2), 2];
+				          	} else {
+				            	return [50,50];
+				          	}
+			      		}
+			      	}
+				}
+			]
+		});
+		if (isVisible($("#popupManage")[0]) && $("#popupManage")[0].attributes['current'].value == btn.id) {
+
+		} else {
+			$.ajax({
+				url: "/kurs/getListenerDay",
+				method: "post",
+				data: {
+					"id" : btn.id.split('|')[0],
+					"id_kurs" : btn.id.split('|')[1]
+				},
+				complete: function(res) {
+					$("#popupManage > .col").append(res.responseText);
+					$("#popupManage")[0].setAttribute('data-show', '');
+					$("#popupManage")[0].setAttribute('current', btn.id);
+					hideOnClickOutside($("#popupManage")[0]);
+				}
+			})
+		}
+	}
+
+	var create = function() {
+		$("#floatForm")[0].removeAttribute('data-show');
+		formData = new FormData();
+		file = inputGroupFile01.files[0];
+		if (file) {
+			formData.append('lesson', file);
+			$.ajax({
+				url: "/kurs/createDay",
+				method: "post",
+				data: {
+					"id_kurs" : "<%- kurs %>",
+					"path" : true
+				},
+				complete: function(oldRes) {
+					$.ajax({
+						url: "/kurs/loadLessonFile",
+				        cache: false,
+				        contentType: false,
+				        processData: false,
+						method: "post",
+						data: formData,
+						complete: function(res) {
+								kursInfo.lastElementChild.click();
+						}
+					})
+				}
+			})
+		} else {
+			$.ajax({
+				url: "/kurs/createDay",
+				method: "post",
+				data: {
+					"id_kurs" : "<%- kurs %>"
+				},
+				complete: function(res) {
+					$.ajax({
+						url: "/kurs/edu",
+						method: "post",
+						data: {id: "<%- kurs %>"},
+						complete: function(res) {
+							kursInfo.lastElementChild.click();
+						}
+					})
+				}
+			})
+		}
+		
+	}
+
+	$(document).ready((e) => {
+		$('.custom-file-input').on('change', function() { 
+		    let fileName = $(this).val().split('\\').pop(); 
+		    $(this).next('.custom-file-label').addClass("selected").html(fileName); 
+		});
+
+		for(key in buttons){
+			buttons[key].addEventListener('click', (e) => {
+				loadInfo(e.target)
+			});
+		}
+	})
+	
+	
+
+</script>

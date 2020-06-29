@@ -1,0 +1,32 @@
+{
+	"port": 3000,
+	"session": {
+		"secret" : "Moonlight_Alenstoir",
+		"resave" : "false",
+		"key" : "sid",
+  		"saveUninitialized" : true,
+		"cookie": {
+			"path" : "/",
+			"httpOnly" : true,
+			"maxAge" : null
+		}
+	},
+	"bdOptions": {
+		"host": "localhost",
+		"user": "root",
+		"password": "password",
+		"database": "Moonlight"
+	},
+	"bdSession": {
+		"host": "localhost",
+		"port": 3306,
+		"user": "root",
+		"password": "password",
+		"database": "Moonlight_sessions",
+		"clearExpired": true,
+		"createDatabaseTable": true,
+		"expiration": 86400000,
+		"checkExpirationInterval": 900000
+	},
+	"dadataToken": "cb9433323bd59f058259a2e2cb93e5831aa5e284"
+}

@@ -1,0 +1,364 @@
+<ul class="nav nav-tabs pt-1" aria-label="Регистрация пользователя">
+  	<!-- Первая вкладка (активная) -->
+ 	<li class="nav-item">
+  		<a class="nav-link active" data-toggle="tab" href="#createUser">Создание</a>
+  	</li>
+  	<!-- Вторая вкладка -->
+</ul>
+
+<div class="tab-content">
+	<div class="tab-pane fade show active" id="createUser">
+			<div class="row m-3">
+				<div class="w-3 pt-3">
+					<form method="post" action="/users/create">
+						<div class="btn-group btn-group-toggle mb-3" data-toggle="buttons">
+						  	<label class="btn btn-light active">
+							    <input type="radio" name="level" id="l3" autocomplete="off" checked onclick="updateLevel()" value="3"> Пользователь
+						  	</label>
+						  	<label class="btn btn-light">
+							    <input type="radio" name="level" id="l2" autocomplete="off" onclick="updateLevel()" value="2"> Преподаватель
+						  	</label>
+						  	<label class="btn btn-light">
+							    <input type="radio" name="level" id="l1" autocomplete="off" onclick="updateLevel()" value="1"> Организация
+						  	</label>
+						</div>
+						<div class="input-group mb-3" >
+							<div class="input-group-prepend fix-w-130">
+								<span class="input-group-text" id="viewLogin">Логин</span>
+							</div>
+							<input type="text" name="login" onchange="checkNick()" autocomplete="username" maxlength="25" pattern="[A-Za-z0-9-]*" required class="form-control he-a" id="login" aria-describedby="viewLogin" value="">
+						</div>
+						<div class="input-group mb-3" id="viewFio">
+							<div class="input-group-prepend fix-w-130">
+								<span class="input-group-text" >Ф.И.О.</span>
+							</div>
+							<input type="text" name="fio" maxlength="50" pattern="[А-Яа-яЁё0-9№-\s]*" required class="form-control he-a" id="fio" aria-describedby="viewFio" value="">
+						</div>
+						<div class="input-group mb-3" id="viewOrgReg">
+							<div class="input-group-prepend fix-w-130">
+								<span class="input-group-text" >Организация</span>
+							</div>
+							<input type="text" name="organization" maxlength="50" class="form-control he-a" id="organization" aria-describedby="viewOrgReg" value="">
+						</div>
+						<div class="input-group mb-3" id="viewInn">
+							<div class="input-group-prepend fix-w-130">
+								<span class="input-group-text" >ИНН</span>
+							</div>
+							<input type="text" name="inn" readonly maxlength="50" required class="form-control he-a" id="inn" aria-describedby="viewInn" value="">
+						</div>
+						<div class="input-group mb-3" id="viewKpp">
+							<div class="input-group-prepend fix-w-130">
+								<span class="input-group-text" >КПП</span>
+							</div>
+							<input type="text" name="kpp" readonly maxlength="50" required class="form-control he-a" id="kpp" aria-describedby="viewKpp" value="">
+						</div>
+						<div class="input-group mb-3" id="viewOgrn">
+							<div class="input-group-prepend fix-w-130">
+								<span class="input-group-text" >ОГРН</span>
+							</div>
+							<input type="text" name="ogrn" readonly maxlength="50" required class="form-control he-a" id="ogrn" aria-describedby="viewOgrn" value="">
+						</div>
+						<div class="input-group mb-3" id="viewEmail">
+							<div class="input-group-prepend fix-w-130">
+								<span class="input-group-text" >Email</span>
+							</div>
+							<input type="email" name="email" pattern="[A-Za-z.-]*@[A-Za-z-]*[.][A-Za-z]*" required class="form-control he-a" id="email" aria-describedby="viewEmail" value="">
+						</div>
+						<div class="input-group mb-3" id="viewPhone">
+							<div class="input-group-prepend fix-w-130">
+								<span class="input-group-text" >Телефон</span>
+							</div>
+							<input type="tel" name="phone" autocomplete="telephone" required class="form-control he-a" id="phone" aria-describedby="viewPhone" value="">
+						</div>
+						<div class="input-group mb-3">
+							<div class="input-group-prepend fix-w-130">
+								<span class="input-group-text" id="viewPass">Пароль</span>
+							</div>
+							<input type="password" autocomplete="new-password" name="pass" maxlength="25" pattern="[A-Za-z0-9-]*" required class="form-control he-a" id="pass" aria-describedby="viewPass" value="">
+						</div>
+						<div class="input-group mb-3">
+							<div class="input-group-prepend fix-w-130">
+								<span class="input-group-text" id="confPass">Подтвердить</span>
+							</div>
+							<input type="password" autocomplete="new-password" name="" maxlength="25" pattern="[A-Za-z0-9-]*" required class="form-control he-a" id="passVal" aria-describedby="confPass" value="">
+						</div>
+						<div class="input-group mb-3" id="viewOrg">
+							<div class="input-group-prepend fix-w-130">
+								<span class="input-group-text" id="">Организация</span>
+							</div>
+							<input name="orgVal" type="text" onchange="checkOrg()" class="form-control he-a" id="orgVal" aria-describedby="viewOrg" value="">
+							<input name="orgId" type="hidden" onchange="" class="form-control he-a" id="orgId" aria-describedby="" value="">
+						</div>
+						<div class="input-group mb-3" id="userLoc">
+							<div class="input-group-prepend fix-w-130">
+								<span class="input-group-text" id="">Локация</span>
+							</div>
+							<button class="form-control btn btn-sm he-a btn-block btn-outline-secondary navbar-right collapsed" type="button" id="userBtnLocation" data-target="#userLocation" data-toggle="collapse">
+									Отсутствует
+							</button>
+						</div>
+						<div class="form-label-group collapse text-left" id="userLocation">
+							<select id="locations" name="locations" onchange="addLocation(event)" class="" placeholder="Выберите локацию"> 
+								<option disabled selected value = ' '> Выберите локацию </option>
+								<script type="text/javascript">
+									$(document).ready(function(){
+										$.ajax({
+											url: "/kurs/getLocations",
+											method: "post",
+											data: {
+												"id" : ""
+											},
+											complete: function(res) {
+												$("#locations").append(res.responseText);
+												$("#locations").selectize();
+												
+												selector = $("#locations").selectize();
+												selector = selector[0].selectize;
+												userBtnLocation.textContent = selector.getItem(selector.getValue())[0].innerText;
+											}
+										})
+									})							
+								</script>
+							</select>
+						</div>
+					<button class="btn btn-lg btn-dark btn-block shadow-sm mt-1" type="submit"> Зарегистрироваться </button>
+					</form>
+				</div>
+			</div>
+	</div> 
+</div>  
+<div class="popsup simpleForm" id="loginPopup" role="tooltip">
+	<div class="col flex up f-b">
+		Логин уже занят
+	</div>
+	<div class="arrow" data-popper-arrow></div>
+</div>
+
+<section id="floatForm" class="floatForm pd-0 bg-white container text-center shadow-sm">
+	<%- partial('../partials/inputAdress') %>
+</section>
+<script type="text/javascript">
+
+	$("#organization").suggestions({
+        token: "cb9433323bd59f058259a2e2cb93e5831aa5e284",
+        type: "PARTY",
+        /* Вызывается, когда пользователь выбирает одну из подсказок */
+        onSelect: function(suggestion) {
+
+        	$("#inn").val(suggestion.data.inn);
+        	$("#kpp").val(suggestion.data.kpp);
+        	$("#ogrn").val(suggestion.data.ogrn);
+        	$("#fio").val(suggestion.value);
+        	/*
+        	$("#house").val(suggestion.data.house);
+        	$("#room").val(suggestion.data.flat);
+        	*/
+            console.log(suggestion);
+        }
+    });
+
+    var checkOrg = function(){
+    	$.ajax({
+			url: "/users/getKey",
+			method: "post",
+			data: {
+				key: $("#orgVal").val()
+			},
+			complete: function(res) {
+				console.log(res);
+				if (res.responseJSON) {
+					popperInstance = Popper.createPopper(login, $("#loginPopup")[0], {
+						placement: 'bottom',
+						modifiers: [
+							{
+								name: 'offset',
+								options:  {
+									offset: ({ placement, reference, popper }) => {
+							          	if (placement === 'bottom') {
+							            	return [0, -2];
+							          	} else {
+							            	return [50,50];
+							          	}
+						      		}
+						      	}
+							}
+						]
+					});
+					orgVal.setCustomValidity("");
+					$("#orgId").val(res.responseJSON.id);
+				} else {
+					orgVal.setCustomValidity("Ключ не существует");
+					$("#orgId").val(null);
+				}
+			}
+		})
+    }
+
+	var checkNick = function(){
+		$.ajax({
+			url: "/users/getLogins",
+			method: "post",
+			data: {
+				login: $("#login").val()
+			},
+			complete: function(res) {
+				if (res.responseJSON) {
+					popperInstance = Popper.createPopper(login, $("#loginPopup")[0], {
+						placement: 'bottom',
+						modifiers: [
+							{
+								name: 'offset',
+								options:  {
+									offset: ({ placement, reference, popper }) => {
+							          	if (placement === 'bottom') {
+							            	return [0, -2];
+							          	} else {
+							            	return [50,50];
+							          	}
+						      		}
+						      	}
+							}
+						]
+					});
+					$("#loginPopup")[0].setAttribute('data-show', '');
+				} else {
+					$("#loginPopup")[0].removeAttribute('data-show');
+
+				}
+			}
+		})
+	}
+
+	var updateLevel = function(){
+		switch(document.querySelector('input[name="level"]:checked').value) {
+			case '1': {
+				console.log(1);
+				$("#userLoc").show();
+				$("#viewOrg").hide();
+				$("#viewFio").hide();
+				$("#viewInn").show();
+				$("#viewOrgReg").show();
+				$("#viewInn").show();
+				$("#viewKpp").show();
+				$("#viewOgrn").show();
+				orgVal.setCustomValidity("");
+				break;
+			}
+			case '2': {
+				console.log(2);
+				$("#viewOrg").show();
+				$("#userLoc").hide();	
+				$("#viewFio").show();
+				$("#viewInn").hide();
+				$("#viewOrgReg").hide();
+				$("#viewInn").hide();
+				$("#viewKpp").hide();
+				$("#viewOgrn").hide();
+				orgVal.setCustomValidity("Ключ не существует");
+
+				break;			
+			}
+			default: {
+				console.log("default");
+				$("#viewOrg").hide();
+				$("#viewOrgReg").hide();
+				$("#viewInn").hide();
+				$("#viewKpp").hide();
+				$("#userLoc").hide();
+				$("#viewFio").show();
+				$("#viewInn").hide();	
+				$("#viewOgrn").hide();
+				orgVal.setCustomValidity("");
+
+			}
+		}
+		
+	}
+
+
+
+	var checkPass = function() {
+		if (pass.value == passVal.value) {
+			passVal.setCustomValidity("");
+		} else {
+			passVal.setCustomValidity("Пароли не совпадают");
+		}
+	}
+
+
+	console.log("level: "+"<%- level %>");
+	var markRed = function(field) {
+		if (field.val() == '') {
+			field.css('background-color', 'red');
+			return true;
+		}
+		return false;
+	}
+	var saveLocation = function() {
+		if (markRed($("#index"))){
+
+		} else if (markRed($("#region"))) {
+
+		} else if (markRed($("#city"))) {
+
+		} else if (markRed($("#street"))) {
+
+		} else {
+			console.log($("#index").val());
+			console.log($("#region").val());
+			console.log($("#city").val());
+			console.log($("#street").val());
+			console.log($("#house").val());
+			$.ajax({
+				url: "/save/address",
+				method: "post",
+				data: {
+					index: $("#index").val(),
+					region: $("#region").val(),
+					city: $("#city").val(),
+					street: $("#street").val(),
+					house: $("#house").val(),
+					room: $("#room").val(),
+				},
+				complete: function(res) {
+					if (true) {
+						selector = $("#locations").selectize();
+						selector = selector[0].selectize;
+						selector.addOption({value: res.responseJSON.value, text: res.responseJSON.text});
+						selector.refreshOptions(true);
+						$("#floatForm")[0].removeAttribute('data-show');
+					} else {
+						console.error(500);
+					}
+				}
+			})
+			console.log("save");
+		}
+	}
+
+	var addLocation = function(e){
+		selector = $("#locations").selectize();
+		selector = selector[0].selectize;
+		console.log(e);
+		if (e.target.value == 'nan') {
+			selector.setValue(' ', 1);
+			$("#floatForm")[0].setAttribute('data-show', '');
+			hideOnClickOutside($("#floatForm")[0]);
+		} else {
+			selector = $("#locations").selectize();
+			selector = selector[0].selectize;
+			userBtnLocation.textContent = selector.getItem(selector.getValue())[0].innerText;
+		}
+	}
+
+	function open_dialog() {
+		$("#editIco").trigger("click");
+	}
+
+	$(document).ready(() => {
+		console.log("kekw");
+		l3.click();
+		pass.onchange = checkPass;
+		passVal.onchange = checkPass;	
+	})
+</script>

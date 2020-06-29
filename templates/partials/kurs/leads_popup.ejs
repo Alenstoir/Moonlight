@@ -1,0 +1,116 @@
+<label>
+	Присутствие
+</label>
+<div class="btn-group btn-group-toggle" data-toggle="buttons">
+  <% if(result.presense) { %>
+	  <label class="btn btn-light">
+	    <input type="radio" name="presense" id="p0" autocomplete="off"   onclick="update()" value="0" text="-"> -
+	  </label>
+	  <label class="btn btn-light active">
+	    <input type="radio" name="presense" id="p1" autocomplete="off" checked onclick="update()" value="1" text="+"> +
+	  </label>
+  <% } else { %>
+	  <label class="btn btn-light active">
+	    <input type="radio" name="presense" id="p0" autocomplete="off" checked onclick="update()" value="0" text="-"> -
+	  </label>
+	  <label class="btn btn-light">
+	    <input type="radio" name="presense" id="p1" autocomplete="off" onclick="update()" value="1" text="+"> +
+	  </label>
+  <% } %>
+</div>
+<label>
+	Оценка
+</label>
+<div class="btn-group btn-group-toggle" data-toggle="buttons">
+  	<% if(result.mark == null) { %>
+	  	<label class="btn btn-light active">
+		    <input type="radio" name="mark" id="m0" autocomplete="off" checked onclick="update()" value="null"> -
+	  	</label>
+	<% } else { %>
+	  	<label class="btn btn-light">
+		    <input type="radio" name="mark" id="m0" autocomplete="off" onclick="update()" value="null"> -
+	  	</label>
+  	<% } %>
+  	<% if(result.mark == 2) { %>
+		<label class="btn btn-light active">
+	    	<input type="radio" name="mark" id="m2" autocomplete="off" checked onclick="update()" value="2"> 2
+	  	</label>
+	<% } else { %>
+	  	<label class="btn btn-light">
+	    	<input type="radio" name="mark" id="m2" autocomplete="off" onclick="update()" value="2"> 2
+	  	</label>
+  	<% } %>
+  	<% if(result.mark == 3) { %>
+		<label class="btn btn-light active">
+			<input type="radio" name="mark" id="m3" autocomplete="off" checked onclick="update()" value="3"> 3
+		</label>
+	<% } else { %>
+	  	<label class="btn btn-light">
+			<input type="radio" name="mark" id="m3" autocomplete="off" onclick="update()" value="3"> 3
+		</label>
+  	<% } %>
+  	<% if(result.mark == 4) { %>
+		<label class="btn btn-light active">
+			<input type="radio" name="mark" id="m4" autocomplete="off" checked onclick="update()" value="4"> 4
+		</label>
+	<% } else { %>
+	  	<label class="btn btn-light">
+			<input type="radio" name="mark" id="m4" autocomplete="off" onclick="update()" value="4"> 4
+		</label>
+  	<% } %>
+  	<% if(result.mark == 5) { %>
+		<label class="btn btn-light active">
+			<input type="radio" name="mark" id="m5" autocomplete="off" checked onclick="update()" value="5"> 5
+		</label>
+	<% } else { %>
+	  	<label class="btn btn-light">
+			<input type="radio" name="mark" id="m5" autocomplete="off" onclick="update()" value="5"> 5
+		</label>
+  	<% } %>
+</div>
+	<label for="notes">Заметки</label>
+<div class="form-group">
+	<textarea class="form-control" id="notes" rows="3" draggable="false"><%- result.note %></textarea>
+</div>
+
+<script type="text/javascript">
+	var notesTimer;
+	$(document).ready((e) => {
+		currentButton.textContent = document.querySelector('input[name="mark"]:checked').value;
+		if (document.querySelector('input[name="mark"]:checked').value == 'null') {
+			currentButton.textContent = document.querySelector('input[name="presense"]:checked').attributes["text"].value;
+		}
+	})
+
+	$('#notes').bind('input propertychange', function(){ 
+		console.log("pop");
+		clearTimeout(notesTimer);
+		notesTimer = setTimeout(() => {
+			update();
+		}, 1000);
+	})
+
+	var update = function(){
+		console.log(document.querySelector('input[name="mark"]:checked').value,);
+		console.log(document.querySelector('input[name="presense"]:checked').value);
+		console.log($("#notes")[0].value);
+		$.ajax({
+			url: "/kurs/updateData",
+			method: "post",
+			data: {
+				"id" : "<%- result.user_id %>",
+				"id_kurs" : "<%- result.lesson_instance %>",
+				"mark" : document.querySelector('input[name="mark"]:checked').value,
+				"presense" : document.querySelector('input[name="presense"]:checked').value,
+				"note" : $("#notes")[0].value
+			},
+			complete: function(res) {
+				currentButton.textContent = document.querySelector('input[name="mark"]:checked').value;
+				if (document.querySelector('input[name="mark"]:checked').value == 'null') {
+					currentButton.textContent = document.querySelector('input[name="presense"]:checked').attributes["text"].value;
+				}
+				console.log(res.responseText);
+			}
+		})
+	}
+</script>

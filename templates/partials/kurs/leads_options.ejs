@@ -1,0 +1,11 @@
+<% for(let item in preps) { %>
+	<script type="text/javascript">
+		</script>
+	<% if(result.includes(preps[item].id)){ %>
+		<option selected value="<%- preps[item].id %>">
+	<% } else { %>
+		<option value="<%- preps[item].id %>">
+	<% } %>
+		<%- preps[item].fio %>
+		</option>
+<% } %>

@@ -1,0 +1,107 @@
+<%
+	options = {
+		year: 'numeric',
+		month: 'numeric',
+		day: 'numeric'
+	}
+%>
+<div class="bg-white shadow-sm text-center">
+		<div class="form-user kurs-render" id="kursInfo">
+			<% for( var val in result) { %>
+				<% if(val == "id" || val == "enroll" || val == "title" || val == "status") continue; %>
+				<div class="form-control bg-transparent shadow-sm text-left" type="login">
+				<% if( val == "theme"){ %>
+					Тема
+				<% } else if( val == "longing"){ %>
+					Длительность
+				<% } else if( val == "status"){ %>
+					Статус
+				<% } else if( val == "announse"){ %>
+					Дата публикации
+				<% } else if( val == "start"){ %>
+					Дата начала курса
+				<% } else if( val == "end"){ %>
+					Дата окончания курса
+				<% } else if( val == "results"){ %>
+					Дата выставления результатов
+				<% } else if( val == "responsible"){ %>
+					Организатор
+				<% } else if( val == "curator"){ %>
+					Куратор
+				<% } else if( val == "location"){ %>
+					Место проведения
+				<% } else if( val == "cost"){ %>
+					Стоимость
+				<% } else if( val == "acc_num"){ %>
+					Расчётный счёт
+				<% } else if( val == "max_group"){ %>
+					Размер группы
+				<% } else if( val == "contract_num"){ %>
+					Номер контракта
+				<% }  else if( val == "notes"){ %>
+					Заметки
+				<% }  else if( val == "type"){ %>
+					Программа
+				<% }    else if( val == "prof_name"){ %>
+					Название программы
+				<% }    else if( val == "sphere"){ %>
+					Область деятельности
+				<% }    else if( val == "speciality"){ %>
+					Специальность
+				<% }  else if( val == "accreditation"){ %>
+					Аккредитационная комиссия
+				<% }  else if( val == "leads"){ %>
+					Преподаватели
+				<% } %> : <% if( val == "leads") { %>
+				<% for (lead in result['leads']) { %>
+					<br>
+					<%= result[val][lead]['fio'] %>
+				<% }} else if( val == "accreditation") { %>
+				<% for (accreditation in result['accreditation']) { %>
+					<br>
+					<%= result[val][accreditation]['fio'] %>
+				<% }} else if( (val == "announse" || val == "results" || val == "start" || val == "end") && result[val] != null) { %>
+					<%= result[val].toLocaleString('ru', options) %>
+				<% } else  if(val == "longing") { %>
+					<%= result[val] %> ч. 
+				<% } else  if(val == "type") { %>
+					<% if(result[val] == 0) { %>
+						Повышение квалификации
+					<% } else { %>
+						Профессиональная подготовка
+					<% } %> 
+				<% } else { %> 
+					<%= result[val] %> 
+				<% } %>
+			</div>
+			<% } %>
+			<script type="text/javascript">
+				console.log("<%= result['status'] %>");
+				console.log("<%= level %>");
+			</script>
+			<% if(result['status']) { %>
+				<% if(level == 3) { %>
+					<button id="<%= result['id'] %>" onclick="control(event, 'none')" class="btn btn-lg btn-dark btn-block shadow-sm mt-1">
+						<% if(enroll) { %>
+							Отписаться
+						<% } else { %>
+							Записаться
+						<% } %>
+					</button>
+				<% } else if(level <= 2) { %>
+					<% if(edu) { %>
+						<button id="<%= result['id'] %>" onclick="control(event, 'edu')" class="btn btn-lg btn-dark btn-block shadow-sm mt-1">
+							Панель управления
+						</button>
+					<% } %>
+				<% } 
+				if(level <= 1) { %>
+					<% if(edu) { %>
+						<button id="<%= result['id'] %>" onclick="control(event, 'close')" class="btn btn-lg btn-dark btn-block shadow-sm mt-1">
+							Закрыть курс
+						</button>
+					<% } %>
+				<% } %>
+			<% } %>
+		</div>
+</div>

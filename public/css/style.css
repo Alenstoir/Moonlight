@@ -1,0 +1,508 @@
+body {
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  height:70em;
+  min-width: 1000px;
+  background-color: rgb(245,246,247);
+  margin-bottom: 30px;
+}
+
+a {
+  color: #00B7FF;
+  display: inline-block;
+    text-align: center;
+    align-items: flex-start;
+}
+
+.p-rel {
+  position: relative;
+}
+
+.form-user {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+.navbar {
+  max-height: 100px;
+  min-width: inherit;
+}
+.logo {
+	border: 2px outset white;
+	fill: none;
+}
+
+.logo, .rounded {
+	border-radius: 50%;	
+}
+
+.bg-dark {
+	color: rgba(255,255,255,0.9);
+}
+
+#controller {
+	max-width: 250px;
+	overflow: auto;
+	overflow-wrap: normal;
+	width: 250px;
+}
+
+.head {
+	height: 60px; 
+}
+
+.navbar-nav {
+	flex-direction: row;
+}
+
+.vbutton.active {
+	color: rgba(255,255,255,0.9);
+}
+
+button {
+	color: rgba(255, 255, 255, 0.5);
+}
+
+#controller:not(.collapsed) {
+	color: rgba(255,255,255,0.9);
+}
+
+button:not(.active):hover {
+	color: rgba(255, 255, 255, 0.7);
+}
+
+.vbutton {
+	border-top: 0;
+	border-bottom: 0;
+	margin-left: -1px;
+}
+
+.form-label-group {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.form-label-group > input,
+.form-label-group > label {
+  height: 3.125rem;
+  padding: .75rem;
+}
+
+.form-label-group > label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 100%;
+  margin-bottom: 0; /* Override default `<label>` margin */
+  line-height: 1.5;
+  color: #495057;
+  pointer-events: none;
+  cursor: text; /* Match the input under the label */
+  border: 1px solid transparent;
+  border-radius: .25rem;
+  transition: all .1s ease-in-out;
+}
+
+.form-label-group input:not([type="select-multiple"])::-webkit-input-placeholder {
+  color: transparent;
+}
+
+.form-label-group input:not([type="select-multiple"]):-ms-input-placeholder {
+  color: transparent;
+}
+
+.form-label-group input:not([type="select-multiple"])::-ms-input-placeholder {
+  color: transparent;
+}
+
+.form-label-group input:not([type="select-multiple"])::-moz-placeholder {
+  color: transparent;
+}
+
+.form-label-group input:not([type="select-multiple"])::placeholder {
+  color: transparent;
+}
+
+.form-label-group input:not(:placeholder-shown) {
+  padding-top: 1.25rem;
+  padding-bottom: .25rem;
+}
+
+
+.form-label-group input:not(:placeholder-shown) ~ label {
+  padding-top: .25rem;
+  padding-bottom: .25rem;
+  font-size: 12px;
+  color: #777;
+}
+
+.form-user .checkbox {
+  font-weight: 400;
+}
+
+.form-user .form-control:focus {
+  z-index: 2;
+}
+
+td button {
+  background-color: rgba(253,254,255, 0.7);
+  color: black;
+  max-width: 100%;
+  flex-grow: 1;
+
+}
+td button:not(.active):hover {
+  background-color: rgba(233,234,235, 0.5);
+  color: rgba(0, 0, 0, 1);
+}
+
+.form-user div[type="login"] {
+	max-width: 100%;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+}
+
+.form-user.kurs-render {
+	max-width: 100%;
+}
+
+.bg-semiLight {
+	background-color: rgba(255, 255,255, 0.5);
+}
+
+.navbar {
+	max-height: 150px;
+}
+
+.j-se {
+  justify-content: space-evenly;
+}
+
+.a-s {
+  align-items: stretch;
+}
+
+.f-s {
+	justify-content: flex-start;
+}
+
+.s-b {
+	justify-content: space-between;
+}
+
+.pd-0 {
+  padding: 0;
+}
+
+.h-100 {
+	max-height: 100px;
+	height: 100px;
+}
+.to-right {
+	margin-right: 0;
+}
+
+.m-a {
+  margin: auto;
+}
+
+.input-group > .custom-file > .input-group > .custom-file-label::after , .input-group > .custom-file > .custom-file-label, .input-group > .custom-file > .custom-file-input, .input-group > .custom-file, .custom-file-label::after{
+  height: 100%;
+  max-height: 100%;
+}
+
+.custom-file-label::after {
+  content: "Выбрать"
+}
+
+.input-group > .custom-file {height: auto;}
+
+ul:before{
+    content:attr(aria-label);
+    font-size:120%;
+    font-weight:bold;
+    margin: auto;
+}
+
+.floatForm {
+    padding-top: 1rem;
+    width: 100%;
+    height: 40em;
+    max-width: 64em;
+    display: none;
+    z-index: 10;
+    position: fixed;
+    margin-top: 0px;
+    top: 10em;
+    transform: translateY(0px);
+}
+
+#floatForm.mh-200 {
+  max-height: 200px;
+}
+
+.text-left {
+	text-align: left;
+	height: auto;
+}
+button:focus{
+	outline: none;
+}
+
+.filler {
+  width: auto;
+}
+
+table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.table th, .table td {
+    padding-left: 3px;
+    padding-right: 0;
+}
+
+tr .simpleUser {
+  width: 200px;
+  max-width: 200px;
+  max-height: 50px;
+  height: 50px;
+  padding-top: 1.5rem;
+}
+
+
+.simpleForm {
+  display: block;
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  padding-top: 0.5rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #495057;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.he-a{
+  height: auto;
+}
+
+.editLogo[role="button"]{
+  display: none;
+  top: 0;
+  left: 0px;
+  background-color: rgba(192,192,192, 0.15);
+  color:black;
+  z-index: 200;
+}
+
+.tinyEditLogo {
+  display: none;
+  top: 58px;
+  left: 55px;
+  color:black;
+  z-index: 190;
+}
+
+.d-none {
+  display: none;
+}
+
+.editLogo:hover ~ .editLogo[role="button"], .editLogo[role="button"]:hover, .editLogo[role="button"]:hover + .tinyEditLogo, .tinyEditLogo:hover {
+    position: absolute;
+    display: block;
+}
+
+.fix-w-130 {
+  width: 130px;
+  max-width: 130px;
+}
+.fix-w-100 {
+  width: 100px;
+  max-width: 100px;
+}
+
+.fix-w-100 > span {
+  width: 100%;
+}
+
+.fix-w-130 > span {
+  width: 100%;
+}
+
+.simpleControl {
+  width: 50px;
+  max-width: 50px;
+  height: 50px;
+  max-height: 50px;
+
+}
+
+td > .simpleButton {
+  width: 45px;
+  height: 45px;
+}
+.arrow,
+.arrow::before {
+  top: 1em;
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  z-index: -1;
+}
+
+.btn-light {
+  background-color: rgba(222,223,224, 0.7);
+}
+
+.flex {
+  display: flex;
+}
+
+.up {
+  flex-direction: column;
+}
+.f-b {
+  align-items: baseline;
+}
+
+div.vertical{    
+  margin-left: -60px;
+  margin-top: -40px;
+  position: absolute;
+  width: 150px;
+  transform: rotate(-90deg);
+  -webkit-transform: rotate(-90deg); /* Safari/Chrome */
+  -moz-transform: rotate(-90deg);    /* Firefox */
+  -o-transform: rotate(-90deg);      /* Opera */
+  -ms-transform: rotate(-90deg);     /* IE 9 */
+}
+
+th.vertical{
+  max-width: 50px;
+  height: 85px;
+  line-height: 14px;
+  padding-bottom: 20px;
+  text-align: inherit;
+}
+
+th.simpleUser {
+  max-height: 150px;
+  height: 150px;
+}
+th {
+  width: 50px;
+}
+
+tr.th {
+  height: 150px;
+}
+
+#notes {
+  resize: none;
+}
+
+.arrow::before {
+  content: '';
+  transform: rotate(45deg);
+  border: 1px solid #ced4da;
+  background: white;
+}
+
+.w-3 {
+  flex-grow: 3;
+}
+
+.w-1 {
+  flex-grow: 1;
+}
+
+input[type="text"][readonly] {
+
+  background-color: rgba(0,0,0,0.01);
+}
+
+div.popsup {
+  display: none;
+  width: 220px;
+  max-width: 220px;
+  max-height: 300px;
+  z-index: 999;
+}
+
+.popsup[data-popper-placement^='top'] > .arrow {
+  bottom: -8px;
+}
+
+.popsup[data-popper-placement^='bottom'] > .arrow::before {
+  top: -20px;
+  border-right: 0;
+  border-bottom: 0;
+  background-color: red;
+}
+.popsup[data-popper-placement^='bottom'] {
+  background-color: red;
+}
+
+.popsup[data-popper-placement^='left'] > .arrow {
+  right: -8px;
+}
+
+.popsup[data-popper-placement^='right'] > .arrow::before {
+  left: -8px;
+  border-top: 0;
+  border-right: 0;
+}
+
+.highlighted {
+  background-color: rgba(0,0,0, 0.08);
+}
+tbody > tr:hover {
+  background-color: rgba(0,0,0, 0.05);
+}
+
+#bodyForm {
+  height: 100%
+}
+
+div.popsup[data-show] {
+  display: block;
+}
+section[data-show] {
+  display: block;
+}
+
+.input-group > .suggestions-wrapper > .suggestions-suggestions {
+  left: -66em;
+  top: 3em;
+}
+
+.cover-container {
+  max-width: 42em;
+  text-align: center;
+}
+.cover {
+  padding: 0 1.5rem;
+}
+.cover .btn-lg {
+  padding: .75rem 1.25rem;
+  font-weight: 700;
+}
+
+.h-100I {
+  height: 100%;
+}
+
+/*
+ * Footer
+ */
+.mastfoot {
+  color: rgba(0, 0, 0, .5);
+}

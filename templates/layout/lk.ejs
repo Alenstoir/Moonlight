@@ -1,0 +1,275 @@
+<ul class="nav nav-tabs pt-1" aria-label="<%- result.login %>">
+  	<!-- Первая вкладка (активная) -->
+ 	<li class="nav-item">
+  		<a class="nav-link active" data-toggle="tab" href="#viewUser">Обзор</a>
+  	</li>
+  	<!-- Вторая вкладка -->
+</ul>
+
+<div class="tab-content">
+	<div class="tab-pane fade show active" id="viewUser">
+			<div class="row m-3">
+				<div class="w-3 pt-3">
+					<form method="post" action="/user/edit">
+						<div class="input-group mb-3">
+							<div class="input-group-prepend fix-w-130">
+								<span class="input-group-text" id="viewFio">Ф.И.О.</span>
+							</div>
+							<input type="text" readonly class="form-control he-a" id="fio" aria-describedby="viewFio" value="<%- result.fio %>">
+							<div class="input-group-append">
+								<button class="btn btn-outline-secondary" type="button" id="fioEdit" aria-editable="fio" onclick="toggleEdit(event, 'fio')">
+									<img class="" alt width="20" height="20" vspace="" src="/img/edit.png">
+								</button>
+							</div>
+						</div>
+					</form>
+					<form method="post" action="/user/edit">
+						<div class="input-group mb-3">
+							<div class="input-group-prepend fix-w-130">
+								<span class="input-group-text" id="viewEmail">Email</span>
+							</div>
+							<input type="text" readonly class="form-control he-a" id="email" aria-describedby="viewEmail" value="<%- result.email %>">
+							<div class="input-group-append">
+								<button class="btn btn-outline-secondary" type="button" id="emailEdit" aria-editable="email" onclick="toggleEdit(event, 'email')">
+									<img class="" alt width="20" height="20" vspace="" src="/img/edit.png">
+								</button>
+							</div>
+						</div>
+					</form>
+					<form method="post" action="/user/edit">
+						<div class="input-group mb-3">
+							<div class="input-group-prepend fix-w-130">
+								<span class="input-group-text" id="viewPhone">Телефон</span>
+							</div>
+							<input type="text" readonly class="form-control he-a" id="phone" aria-describedby="viewPhone" value="<%- result.phone %>">
+							<div class="input-group-append">
+								<button class="btn btn-outline-secondary" type="button" id="phoneEdit" aria-editable="phone" onclick="toggleEdit(event, 'phone')">
+									<img class="" alt width="20" height="20" vspace="" src="/img/edit.png">
+								</button>
+							</div>
+						</div>
+					</form>
+					<% if(level == 2) { %>
+						<form method="post" action="/user/edit">
+							<div class="input-group mb-3">
+								<div class="input-group-prepend fix-w-130">
+									<span class="input-group-text" id="viewOrg">Организация</span>
+								</div>
+								<input type="text" readonly class="form-control he-a" id="org" aria-describedby="viewOrg" value="<%- result.related_org %>">
+							</div>
+						</form>
+					<% } %>
+					<% if(level <= 1) { %>
+						<% if(typeof result.relation_key !== 'undefined') { %>
+							<div method="" action="">
+								<div class="input-group mb-3">
+									<div class="input-group-prepend fix-w-130">
+										<span class="input-group-text" id="viewOrg">Ключ</span>
+									</div>
+									<input type="text" readonly class="form-control he-a" id="org" aria-describedby="viewOrg" value="<%- result.relation_key %>">
+								</div>
+							</div>
+						<% } %>
+						<div class="input-group mb-3">
+							<div class="input-group-prepend fix-w-130">
+								<span class="input-group-text" id="">Локация</span>
+							</div>
+							<button class="form-control btn btn-sm he-a btn-block btn-outline-secondary navbar-right collapsed" type="button" id="userBtnLocation" data-target="#userLocation" data-toggle="collapse">
+								<% if(result.location == null) { %>
+									Отсутствует
+								<% } else { %>
+									<%- result.location %>
+								<% } %>
+							</button>
+						</div>
+						<form class="form-label-group collapse text-left" id="userLocation">
+							<select id="locations" name="locations" onchange="addLocation(event)" class="" placeholder="Выберите локацию"> 
+								<option disabled selected value = ' '> Выберите локацию </option>
+								<script type="text/javascript">
+									$(document).ready(function(){
+										$.ajax({
+											url: "/kurs/getLocations",
+											method: "post",
+											data: {
+												"id" : "<%- result.location %>"
+											},
+											complete: function(res) {
+												$("#locations").append(res.responseText);
+												$("#locations").selectize();
+												
+												selector = $("#locations").selectize();
+												selector = selector[0].selectize;
+												userBtnLocation.textContent = selector.getItem(selector.getValue())[0].innerText;
+											}
+										})
+									});
+									console.log("<%- result %>");
+									
+								</script>
+							</select>
+						</form>
+					<% } %>
+				</div>
+				<form method="post" action="/user/edit">
+					<div class="w-1 p-rel">
+						<img class="logo mr-2 ml-3 editLogo" id="editImage" alt width="150" height="150" vspace="10" src="<%- result.userIco %>">
+						<img class="logo mr-2 ml-3 editLogo" role="button" alt width="150" vspace="10" height="150" src="" onclick="open_dialog()">
+						<img class="mr-2 ml-3 tinyEditLogo" role="button" alt width="50" height="50" vspace="" src="/img/edit.png">
+						<input type="file" name="image" class="d-none" id="editIco" accept="image/*">
+					</div>
+				</form>
+			</div>
+	</div> 
+</div>  
+
+<section id="floatForm" class="floatForm pd-0 bg-white container text-center shadow-sm">
+	<%- partial('../partials/inputAdress') %>
+</section>
+<script type="text/javascript">
+	console.log("level: "+"<%- level %>");
+	var markRed = function(field) {
+		if (field.val() == '') {
+			field.css('background-color', 'red');
+			return true;
+		}
+		return false;
+	}
+	var saveLocation = function() {
+		if (markRed($("#index"))){
+
+		} else if (markRed($("#region"))) {
+
+		} else if (markRed($("#city"))) {
+
+		} else if (markRed($("#street"))) {
+
+		} else {
+			console.log($("#index").val());
+			console.log($("#region").val());
+			console.log($("#city").val());
+			console.log($("#street").val());
+			console.log($("#house").val());
+			$.ajax({
+				url: "/save/address",
+				method: "post",
+				data: {
+					index: $("#index").val(),
+					region: $("#region").val(),
+					city: $("#city").val(),
+					street: $("#street").val(),
+					house: $("#house").val(),
+					room: $("#room").val(),
+				},
+				complete: function(res) {
+					if (true) {
+						selector = $("#locations").selectize();
+						selector = selector[0].selectize;
+						selector.addOption({value: res.responseJSON.value, text: res.responseJSON.text});
+						selector.refreshOptions(true);
+						$("#floatForm")[0].removeAttribute('data-show');
+					} else {
+						console.error(500);
+					}
+				}
+			})
+			console.log("save");
+		}
+	}
+
+	var addLocation = function(e){
+		selector = $("#locations").selectize();
+		selector = selector[0].selectize;
+		console.log(e);
+		if (e.target.value == 'nan') {
+			selector.setValue(' ', 1);
+			$("#floatForm")[0].setAttribute('data-show', '');
+			hideOnClickOutside($("#floatForm")[0]);
+		} else {
+			selector = $("#locations").selectize();
+			selector = selector[0].selectize;
+
+			$.ajax({
+				url: "/users/edit",
+				method: "post",
+				data: {
+					field: 'location',
+					value: selector.getValue()
+				},
+				complete: function(res) {	
+					if (res.responseJSON) {
+						userBtnLocation.textContent = selector.getItem(selector.getValue())[0].innerText;
+					} else {
+						$("#userBtnLocation").css('background-color', 'red');
+					}
+				}
+			})
+
+
+		}
+	}
+	editIco.onchange = function() {
+		console.log(this);
+		formData = new FormData();
+		file = (this).files[0];
+		console.log(file);
+		formData.append('image', file);
+		console.log(formData.get('image'));
+		$.ajax({
+				url: "/users/loadImage",
+		        cache: false,
+		        contentType: false,
+		        processData: false,
+				method: "post",
+				data: formData,
+				complete: function(res) {
+					if (res.responseJSON.result) {
+						updateIcon(editImage, res.responseJSON.path);
+						updateIcon(currentLogo, res.responseJSON.path);
+						//<img class="logo mr-2 ml-3" id="currentBigLogo" alt width="100" height="100" vspace="10" src="<- userPic >"> %%
+						//updateIcon(currentBigLogo, res.responseJSON.path);						
+					}
+				}
+			})
+	}
+
+	function open_dialog() {
+		$("#editIco").trigger("click");
+	}
+	var toggleEdit = function(e, id){
+		if ($("#"+id).prop('readonly')) {
+			$("#"+id).prop('readonly', false);
+			$("#"+id+"Edit").empty();
+			$("#"+id+"Edit").append(
+				'<img class="" alt width="20" height="20" vspace="" src="/img/ok.png">'
+			);
+		} else {
+			var $data = [];
+			$("#"+id).closest("form").find('input').each(function(){ 
+				$data[id] = $(this).val();
+			})
+			console.log($data.fio);
+			$.ajax({
+				url: "/users/edit",
+				method: "post",
+				data: {
+					field: id,
+					value: $data[id]
+				},
+				complete: function(res) {	
+					if (res.responseJSON) {
+						$("#"+id).prop('readonly', true);
+						$("#"+id+"Edit").empty();
+						$("#"+id+"Edit").append(
+							'<img class="" alt width="20" height="20" vspace="" src="/img/edit.png">'
+						);	
+					} else {
+						$("#"+id+"Edit").empty();
+						$("#"+id+"Edit").append(
+							'<img class="" alt width="20" height="20" vspace="" src="/img/warn.png">'
+						);
+					}
+				}
+			})
+		}
+	}
+</script>

@@ -1,0 +1,22 @@
+<% for(let item in result) { %>
+	<% if(typeof location !== 'undefined') { %>
+		<script type="text/javascript">
+			//console.log("not undefined");
+		</script>
+		<% if(result[item].idlocation == location){ %>
+			<option selected value="<%- result[item].idlocation %>">
+		<% } else { %>
+			<option value="<%- result[item].idlocation %>">
+		<% } %>
+	<% } else { %>
+		<option value="<%- result[item].idlocation %>">
+	<% } %>
+	<%- result[item].full_name %>
+	</option>
+<% } %>
+<option value="nan" onclick="addLocation()">
+	...
+</option>
+
+<script type="text/javascript">
+</script>

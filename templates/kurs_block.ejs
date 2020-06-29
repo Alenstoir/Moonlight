@@ -1,0 +1,116 @@
+<%
+	options = {
+  		day: 'numeric',
+  		month: 'numeric',
+ 		year: 'numeric'
+	}
+for( var key in result) { %>
+	<% if(result[key]['status']) { %>
+		<div class=" shadow-sm rounded mt-3 ">
+	<% } else { %>
+		<div class=" shadow-sm rounded mt-3 highlighted">
+	<% } %>
+		<nav class="navbar navbar-light container" role="button" data-target="#kurs<%= key %>" data-toggle="collapse">
+			<div class="col f-s">
+				<div class="row s-b mt-2">
+					<div class="mh-100 mb-1 bg-semiLight rounded">
+						<div class="mr-2 ml-2 mt-1 mb-1 ">
+							Курс: <%= result[key].title %>
+						</div>
+					</div>
+					<div class="mh-100 mb-1 bg-semiLight rounded">
+						<img src="/img/unlock_bar.svg" width="30" height="20" fill="none" stroke="currentColor" stroke-width="2" focusable="false"></img>
+					</div>		
+				</div>
+				<div class="row f-s mt-2 bg-semiLight rounded">
+					<div class="mr-2 ml-2 mt-1 mb-1">
+						Дата начала: 
+						<%= result[key]['start'].toLocaleString('ru', options) %>
+						</script>
+						</script> 
+					</div>
+					<div class="mr-2 ml-2 mt-1 mb-1">
+						Дата окончания:
+						<%= result[key]['end'].toLocaleString('ru', options) %>
+					</div>
+				</div >
+				<div class="row f-s mt-2 bg-semiLight rounded">
+					<div class="mr-2 ml-2 mt-1 mb-1">
+					Размер группы: <%= result[key]['max_group'] %>
+					</div>
+				</div>
+
+			</div>
+		</nav>	
+		<div class="bg-white shadow-sm collapse text-center" id="kurs<%= key %>">
+				<div class="form-user kurs-render">
+					<% for( var val in result[key]) { %>
+						<% if(val == "id" || val == "start" || val == "end" || val == "max_group" || val == "enroll" || val == "title" || val == "status") continue; %>
+						<div class="form-control bg-transparent shadow-sm text-left" type="login">
+						<% if( val == "theme"){ %>
+							Тема
+						<% } else if( val == "longing"){ %>
+							Длительность
+						<% } else if( val == "status"){ %>
+							Статус
+						<% } else if( val == "announse"){ %>
+							Дата публикации
+						<% } else if( val == "results"){ %>
+							Дата выставления результатов
+						<% } else if( val == "responsible"){ %>
+							Организатор
+						<% } else if( val == "curator"){ %>
+							Куратор
+						<% } else if( val == "location"){ %>
+							Место проведения
+						<% } else if( val == "cost"){ %>
+							Стоимость
+						<% } else if( val == "prof_name"){ %>
+							Название программы
+						<% } else if( val == "acc_num"){ %>
+							Расчётный счёт
+						<% }  else if( val == "type"){ %>
+							Программа
+						<% }  else if( val == "contract_num"){ %>
+							Номер контракта
+						<% }  else if( val == "sphere"){ %>
+							Область деятельности
+						<% }  else if( val == "speciality"){ %>
+							Специальность
+						<% }  else if( val == "notes"){ %>
+							Заметки
+						<% }  else if( val == "accreditation"){ %>
+							Аккредитационная комиссия
+						<% }  else if( val == "leads"){ %>
+							Преподаватели
+						<% } %> : <% if( val == "leads") { %>
+						<% for (lead in result[key]['leads']) { %>
+							<br>
+							<%= result[key][val][lead]['fio'] %>
+						<% }} else if( val == "accreditation") { %>
+						<% for (accreditation in result[key]['accreditation']) { %>
+							<br>
+							<%= result[key][val][accreditation]['fio'] %>
+						<% }} else if( (val == "announse" || val == "results") && result[key][val] != null) { %>
+							<%= result[key][val].toLocaleString('ru', options) %>
+						<% } else  if(val == "longing") { %>
+							<%= result[key][val] %> ч. 
+						<% } else  if(val == "type") { %>
+							<% if(result[key][val] == 0) { %>
+								Повышение квалификации
+							<% } else { %>
+								Профессиональная подготовка
+							<% } %> 
+						<% } else { %> 
+							<%= result[key][val] %> 
+						<% } %>
+					</div>
+					<% } %>
+						<button id="<%= result[key]['id'] %>" onclick="control(event, null)" class="btn btn-lg btn-dark btn-block shadow-sm mt-1">
+							Подробно
+						</button>
+				</div>
+		</div>
+	</div>
+<% } %>
+

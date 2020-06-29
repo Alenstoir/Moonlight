@@ -1,0 +1,13 @@
+<script type="text/javascript">
+	$(document).ready(function(){
+		$.ajax({
+			url: "/kurs/render",
+			method: "post",
+			data: "",
+			complete: function(res) {
+				$("#bodyForm").empty();
+				$("#bodyForm").append(res.responseText);
+			}
+		})
+	});
+</script>

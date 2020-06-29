@@ -1,0 +1,217 @@
+<ul class="nav nav-tabs pt-1" aria-label="<%- result.title %>">
+  	<!-- Первая вкладка (активная) -->
+ 	<li class="nav-item">
+  		<a class="nav-link active" data-toggle="tab" href="#viewKursBlock">Обзор</a>
+  	</li>
+  	<!-- Вторая вкладка -->
+  	<% if(level < 2 && editable) { %>
+  	<li class="nav-item">
+    	<a class="nav-link" data-toggle="tab" href="#editKursBlock">Редактирование</a>
+  	</li>
+	<% } %>
+
+  	<% if(level <= 2) { %>
+  	<li class="nav-item">
+    	<a class="nav-link" data-toggle="tab" href="#listenerViewBlock">Слушатели</a>
+  	</li>
+	<% } %>
+	<% if(level <= 3) {  %>
+  	<li class="nav-item">
+    	<a class="nav-link" data-toggle="tab" href="#filesViewBlock">Файлы</a>
+  	</li>
+	<% } %>
+  	<!-- Возврат к курсам -->
+  	<li class="nav-item">
+  		<a class="nav-link" href="#" onclick="backFromKurs()">Вернуться</a>
+  	</li>
+</ul>
+
+<script type="text/javascript">
+	$(document).ready(()=>{
+		$("#bodyForm .navbar").slideUp();
+		$.ajax({
+			url: "/kurs/info",
+			method: "post",
+			data: {id: "<%- result.id %>"},
+			complete: function(res) {
+				$("#viewKursBlock").empty();
+				$("#viewKursBlock").append(res.responseText);				
+			}
+		})
+  		"<% if(level <= 2) { %>"
+		$.ajax({
+			url: "/kurs/listeners",
+			method: "post",
+			data: {id: "<%- result.id %>"},
+			complete: function(res) {
+				$("#listenerViewBlock").empty();
+				$("#listenerViewBlock").append(res.responseText);				
+			}
+		})
+		"<% } %>"
+  		"<% if(level <= 3) { %>"
+		$.ajax({
+			url: "/kurs/getFiles",
+			method: "post",
+			data: {id: "<%- result.id %>"},
+			complete: function(res) {
+				$("#filesViewBlock").empty();
+				$("#filesViewBlock").append(res.responseText);				
+			}
+		})
+		"<% } %>"
+	})
+</script>
+
+<!-- Блоки с контентом -->  
+<div class="tab-content">
+  <div class="tab-pane fade show active" id="viewKursBlock">
+  	Идёт загрузка...
+  </div> 
+  <div class="tab-pane fade" id="listenerViewBlock">
+  	Идёт загрузка...
+  </div>
+  <div class="tab-pane fade" id="filesViewBlock">
+  	Идёт загрузка...
+  </div>
+  <% if(level < 2 && editable) { %>
+	  <div class="tab-pane fade" id="editKursBlock">
+	  	<form class="container text-left pb-3 pt-1" method="post" action="/kurs/confirm_creation">
+			<label for="" class="pt-1">Тема</label>
+			<div class="form-label-group">
+				<select id="themeSelect" name="theme" class="selectize" placeholder="Выберите тему"> 
+					<option  disabled> Выберите тему </option>
+					<% for(let item in themes) { %>
+						<% if(result.theme == item){ %>
+							<option selected value="<%- themes[item].id %>">
+						<% } else { %>
+							<option value="<%- themes[item].id %>">
+						<% } %>
+								<%- themes[item].name %>
+							</option>
+					<% } %>
+				</select>
+			</div>
+			<div class="form-label-group">
+				<input id="longing" type="number" name="longing" class="form-control" placeholder="Длительность" value="<%- result.longing %>">
+				<label for="longing">Длительность</label>
+			</div>
+			<div class="form-label-group">
+				<input id="start" type="date" name="start" class="form-control" placeholder="Дата начала" value="<%- result.start %>">
+				<label for="start">Дата начала</label>
+			</div>
+			<div class="form-label-group">
+				<input id="end" type="date" name="end" class="form-control" placeholder="Дата окончания" value="<%- result.end %>">
+				<label for="end">Дата окончания</label>
+			</div>
+			<label for="">Организатор</label>
+			<div class="form-label-group">
+				<select id="orgVal" name="org" class="selectize" placeholder="Выберите организатора"> 
+					<option disabled> Выберите организатора </option>
+					<% for(let item in orgs) { %>
+						<% if(result.responsible == item){ %>
+							<option selected value="<%- orgs[item].id %>">
+						<% } else { %>
+							<option value="<%- orgs[item].id %>">
+						<% } %>
+							<%- orgs[item].fio %>
+							</option>
+					<% } %>
+				</select>
+			</div>
+			<label for="">Место проведения</label>
+			<div class="form-label-group">
+				<select id="locVal" name="location" class="selectize" placeholder="Выберите место проведения"> 
+					<option disabled> Выберите место проведения </option>
+					<% for(let item in locations) { %>
+						<% if(result.location == item){ %>
+							<option selected value="<%- locations[item].idlocation %>">
+						<% } else { %>
+							<option value="<%- locations[item].idlocation %>">
+						<% } %>
+							<%- locations[item].city + ', ' + locations[item].street + ', ' + locations[item].house %>
+							</option>
+					<% } %>
+				</select>
+			</div>
+			<label for="">Куратор</label>
+			<div class="form-label-group">
+				<select id="curVal" name="curator" class="selectize" placeholder="Выберите куратора"> 
+					<option disabled> Выберите куратора </option>
+					<% for(let item in preps) { %>
+						<% if(result.curator == item){ %>
+							<option selected value="<%- preps[item].id %>">
+						<% } else { %>
+							<option value="<%- preps[item].id %>">
+						<% } %>
+							<%- preps[item].fio %>
+							</option>
+					<% } %>
+				</select>
+			</div>
+			<div class="form-label-group">
+				<input id="max_group" type="number" name="max_group" class="form-control" placeholder="Размер группы" value="<%- result.max_group %>">
+			<label for="max_group">Размер группы</label>
+			</div>
+
+			<label for="">Преподаватели</label>
+			<div  class="form-label-group">
+				<select id="leads" multiple name="leads[]" class="" placeholder="Выберите преподавателей"> 
+					<option disabled> Выберите преподавателей </option>
+					<script type="text/javascript">
+						$(document).ready(function(){
+							$.ajax({
+								url: "/kurs/getLeads",
+								method: "post",
+								data: {
+									"id" : "<%- result.id %>"
+								},
+								complete: function(res) {
+									console.log("done");
+									$("#leads").append(res.responseText);
+									$("#leads").selectize();
+								}
+							})
+						});
+					</script>
+
+				</select>
+			</div>
+			<div class="form-label-group">
+				<input id="acc_num" type="text" name="acc_num" class="form-control" placeholder="Рассчётный номер" value="<%- result.acc_num %>">
+				<label for="acc_num">Рассчётный номер</label>
+			</div>
+			<div class="form-label-group">
+				<input id="cost" type="text" name="cost" class="form-control" placeholder="Стоимость">
+				<label for="cost">Стоимость</label>
+			</div>
+			<div class="form-label-group">
+				<input id="contract_num" type="text" name="contract_num" class="form-control" placeholder="Номер договора" value="<%- result.contract_num %>">
+				<label for="contract_num">Номер договора</label>
+			</div>
+			<div class="form-label-group">
+				<input id="notes" type="text" name="notes" class="form-control" placeholder="Заметки" value="<%- result.notes %>">
+				<label for="notes">Заметки</label>
+			</div>
+			<button class="btn btn-lg btn-dark btn-block shadow-sm mt-1 " type="submit">Сохранить</button>
+		</form>
+	  </div>
+	<% } %>
+</div>  
+
+
+	
+<script type="text/javascript">
+	var backFromKurs = function(idRef){
+		$("#bodyForm .nav").slideDown();
+		$("#bodyForm .active").click();
+		if (idRef) {
+			var timerRef = setTimeout(() => {
+				$("#"+idRef).click();	
+			}, 400);
+		}
+	}
+	$(document).ready((e) => {
+		$('.selectize').selectize();
+	})
+</script>

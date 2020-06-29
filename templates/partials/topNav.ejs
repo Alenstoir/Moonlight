@@ -1,0 +1,70 @@
+<div class="bg-dark shadow-sm ">
+	<nav class="navbar navbar-dark container" role="navigation">
+		<ul class="navbar-nav mr-auto">
+			<li class="nav-item active"><button id="/" type="button " class="active head vbutton navbar-toggler bg-transparent">Главная</button></li>
+			<li class="nav-item"><button id="/kurs" type="button " class="head vbutton navbar-toggler bg-transparent">Курсы</button></li>
+		</ul>
+		<div class="mh-100">
+			<button id="controller" class="head navbar-toggler navbar-right collapsed" type="button"  data-target="#userForm" data-toggle="collapse">
+				<% if (level >= 0) { %>
+					<img class="logo mr-2" id="currentLogo" alt width="30" height="30" vspace="10" src="<%- userPic %>">
+					<%- currentUser %>
+				<% } else { %>
+					Войти
+				<% } %>
+			</button>
+			
+		</div>
+	</nav>	
+	<div class="bg-light shadow-sm collapse text-center navbar-nav" id="userForm">
+		<% if (level >= 0) { %>
+			<div class="form-user to-right">
+				<div class="form-control bg-transparent shadow-sm" type="login">
+					Привет, <%- currentUser %>
+				</div>
+				<button id="profile" class="btn btn-lg btn-dark btn-block shadow-sm mt-1">Личный кабинет</button>
+				<button id="logout" class="btn btn-lg btn-dark btn-block shadow-sm mt-1">Выход</button>
+			</div>
+		<% } else { %>
+		<div class="form-user to-right">
+			<form  method="post" action="/login">
+				<div class="form-label-group">
+					<input id="loginField" type="text" name="login" class="form-control" placeholder="Логин" autocomplete="login">
+					<label for="loginField">Логин</label>
+				</div>
+				<div class="form-label-group">
+					<input id="passwordField" type="password" name="pass" class="form-control" placeholder="Пароль" autocomplete="current-password">
+					<label for="passwordField">Пароль</label>
+				</div>
+				<button class="btn btn-lg btn-dark btn-block shadow-sm mt-1" type="submit">Вход</button>
+			</form>
+			<button class="btn btn-lg btn-dark btn-block shadow-sm" onclick="register()" type="reg">Регистрация</button>			
+		</div>
+		<% } %>
+	</div>
+</div>
+
+<script type="text/javascript">
+	var register = function() {
+		window.location.href = '/register'
+	}
+	"<% if (typeof click !== 'undefined') { %>"
+		$(document).ready((e) => {
+			window.addEventListener('load', function () {
+		 		console.log("<%- click %>");
+		 		document.getElementById("\<%- click %>").click();
+		 		"<%- click = undefined %>"
+		 	})
+		})
+	"<% } %>"
+	"<% if (typeof redir !== 'undefined') { %>"
+		window.location.href = "/";
+		// $(document).ready((e) => {
+		// 	window.addEventListener('load', function () {
+		// 		console.log("<%- redir %>");
+		// 		document.getElementById("\<%- redir %>").click();
+		// 		"<%- redir = undefined %>"
+		// 	})
+		// })
+	"<% } %>"
+</script>

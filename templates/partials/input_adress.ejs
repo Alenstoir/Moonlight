@@ -1,0 +1,48 @@
+<form class="container text-left" method="post" action="/save/address">
+	<div class="form-label-group">
+		<input id="address" name="address" type="text" class="form-control" placeholder="Введите адрес" />
+		<label for="address">Введите адрес</label>
+	</div>
+
+	<div class="form-label-group">
+		<input id="index" type="text" name="index" class="form-control" placeholder="Индекс" readonly>
+		<label for="index">Индекс</label>
+	</div>
+	<div class="form-label-group">
+		<input id="region" type="text" name="region" class="form-control" placeholder="Регион" readonly>
+		<label for="region">Регион</label>
+	</div>
+	<div class="form-label-group">
+		<input id="city" type="text" name="city" class="form-control" placeholder="Город" readonly>
+		<label for="city">Город</label>
+	</div>
+	<div class="form-label-group">
+		<input id="street" type="text" name="street" class="form-control" placeholder="Улица" readonly>
+		<label for="street">Улица</label>
+	</div>
+	<div class="form-label-group">
+		<input id="house" type="text" name="house" class="form-control" placeholder="Дом" readonly>
+		<label for="house">Дом</label>
+	</div>
+	<div class="form-label-group">
+		<input id="room" type="text" name="room" class="form-control" placeholder="Квартира" readonly>
+		<label for="room">Квартира</label>
+	</div>
+	<button class="btn btn-lg btn-dark btn-block shadow-sm mt-1" type="submit">Запомнить</button>
+</form>
+<script type="text/javascript">
+	$("#address").suggestions({
+        token: "cb9433323bd59f058259a2e2cb93e5831aa5e284",
+        type: "ADDRESS",
+        /* Вызывается, когда пользователь выбирает одну из подсказок */
+        onSelect: function(suggestion) {
+        	$("#index").val(suggestion.data.postal_code);
+        	$("#region").val(suggestion.data.region);
+        	$("#city").val(suggestion.data.city);
+        	$("#street").val(suggestion.data.street_with_type);
+        	$("#house").val(suggestion.data.house);
+        	$("#room").val(suggestion.data.flat);
+            console.log(suggestion.data);
+        }
+    });
+</script>

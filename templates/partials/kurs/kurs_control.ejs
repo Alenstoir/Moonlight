@@ -1,0 +1,92 @@
+<ul class="nav nav-tabs pt-1" aria-label="Курсы">
+  	<!-- Первая вкладка (активная) -->
+ 	<li class="nav-item">
+  		<a class="nav-link active" role="button" data-toggle="tab" id="reqPersonal" onclick="reqPersonal(event)">Текущие</a>
+  	</li>
+  	<!-- Вторая вкладка -->
+	<% if(level) {  %>
+  	<li class="nav-item">
+    	<a class="nav-link" role="button" data-toggle="tab" id="reqAll" onclick="reqAll(event)">Все</a>
+  	</li>
+	<% } %>
+  	<!-- Возврат к курсам -->
+	<% if(level <= 1) {  %>
+  	<li class="nav-item">
+  		<a class="nav-link" role="button" id="crKurs" onclick="createKurs(event)">Создать курс</a>
+  	</li>
+  	<li class="nav-item">
+  		<a class="nav-link" role="button" id="crTheme" onclick="createTheme(event)">Создать тему</a>
+  	</li>
+	<% } %>
+</ul>
+
+	
+<div class="container" id="kursHandler">
+	
+</div>
+<script type="text/javascript">
+	var createKurs = function(e){
+		$("#kursHandler").empty();
+		$.ajax({
+			url: "/kurs/create",
+			method: "post",
+			data: '',
+			complete: function(res) {
+				$('#reqPersonal').removeClass("active");
+				$('#reqAll').removeClass("active");
+				$('#crTheme').removeClass("active");
+				$('#crKurs').addClass("active");
+				$("#kursHandler").append(res.responseText);
+			}
+		})
+	}
+	var createTheme = function(e){
+		$("#kursHandler").empty();
+		$.ajax({
+			url: "/kurs/create_theme",
+			method: "post",
+			data: '',
+			complete: function(res) {
+				$('#reqPersonal').removeClass("active");
+				$('#reqAll').removeClass("active");
+				$('#crKurs').removeClass("active");
+				$('#crTheme').addClass("active");
+				$("#kursHandler").append(res.responseText);
+			}
+		})
+	}
+
+	var reqAll = function(e){
+		$("#kursHandler").empty();
+		$.ajax({
+			url: "/kurs/render",
+			method: "post",
+			data: {"all":true},
+			complete: function(res) {
+				$('#reqPersonal').removeClass("active");
+				$('#crKurs').removeClass("active");
+				$('#crTheme').removeClass("active");
+				$('#reqAll').addClass("active");
+				$("#kursHandler").append(res.responseText);
+			}
+		})
+	}
+	var reqPersonal = function(e){
+		$("#kursHandler").empty();
+		$.ajax({
+			url: "/kurs/render",
+			method: "post",
+			data: "",
+			complete: function(res) {
+				$('#reqAll').removeClass("active");
+				$('#crKurs').removeClass("active");
+				$('#crTheme').removeClass("active");
+				$('#reqPersonal').addClass("active");
+				$("#kursHandler").append(res.responseText);
+			}
+		})
+	}
+	$(document).ready(function(){
+		reqPersonal();
+	});
+</script>

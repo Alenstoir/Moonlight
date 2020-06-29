@@ -1,0 +1,32 @@
+<table class="table">
+	<thead>
+		<tr>
+			<th scope="col">
+				Название
+			</th>
+			<th scope="col">
+
+			</th>
+		</tr>
+	</thead>
+	<tbody>
+		<% for (var key in result) { %>
+	      	<tr>
+      			<td class="pt-3 pb-3">
+     				<div><%= result[key].path.split('/').pop() %></div>
+				</td>
+				<td role="" class="row j-se a-s">
+				<button class="btn btn-sm btn-block btn-outline-secondary" onclick="getFile('<%= result[key].path %>')">
+					Скачать
+				</button>
+				</td>
+	      </tr>
+	    <% } %>		
+	</tbody>
+</table>
+
+<script type="text/javascript">
+	var getFile = function(path) {
+		window.location.href = '/file/' + path;
+	}
+</script>

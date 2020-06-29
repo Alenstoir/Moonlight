@@ -1,0 +1,36 @@
+<div class="bg-dark mb-3 shadow-sm">
+	<nav class="navbar navbar-dark container" role="navigation">
+		<ul class="navbar-nav mr-auto">
+			<li class="nav-item active"><button id="/" onclick="redir(event)" type="button" class="active head vbutton navbar-toggler bg-transparent">Главная</button></li>
+			<li class="nav-item"><button id="/kurs" onclick="redir(event)" type="button" class="head vbutton navbar-toggler bg-transparent">Курсы</button></li>
+		</ul>
+		<div class="mh-100">
+			<button id="controller" class="head navbar-toggler navbar-right collapsed" type="button"  data-target="#userForm" data-toggle="collapse">
+				Войти
+			</button>
+			
+		</div>
+	</nav>	
+	<div class="bg-light shadow-sm collapse text-center navbar-nav" id="userForm">
+		<div class="form-user to-right">
+			<form class="" method="post" action="/login">
+				<div class="form-label-group">
+					<input id="loginField" type="text" name="login" class="form-control" placeholder="Логин" autocomplete="login">
+					<label for="loginField">Логин</label>
+				</div>
+				<div class="form-label-group">
+					<input id="passwordField" type="password" name="pass" class="form-control" placeholder="Пароль" autocomplete="current-password">
+					<label for="passwordField">Пароль</label>
+				</div>
+				<button class="btn btn-lg btn-dark btn-block shadow-sm mt-1" type="submit">Вход</button>
+			</form>
+			<button id="/register" class="btn btn-lg btn-dark btn-block shadow-sm" onclick="redir(event)" type="reg">Регистрация</button>	
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	var redir = function(e) {
+		window.location.href = e.target.id;
+	}
+</script>

@@ -1,0 +1,181 @@
+<form class="container text-left pt-3" method="post" action="/kurs/confirm_creation">
+	<h1>Создание курса</h1>
+
+	<div class="form-label-group">
+		<input id="title" type="text" name="title" class="form-control" placeholder="Название">
+		<label for="longing">Название</label>
+	</div>
+	<div class="form-label-group pt-3">
+		<select id="themeSelect" name="theme" class="selectize" placeholder="Выберите тему"> 
+			<option selected disabled> Выберите тему </option>
+			<% for(let item in themes) { %>
+				<option  value="<%- themes[item].id %>">
+					<%- themes[item].name %>
+				</option>
+			<% } %>
+		</select>
+	</div>
+	<div class="form-label-group pt-3">
+		<select id="typeSelect" name="type" class="selectize" placeholder="Профессиональная программа"> 
+			<option selected disabled> Профессиональная программа </option>
+				<option  value="0">
+					Повышение квалификации
+				</option>
+				<option  value="1">
+					Профессиональная подготовка
+				</option>
+		</select>
+	</div>
+	<div class="form-label-group">
+		<input id="longing" type="number" name="longing" class="form-control" placeholder="Длительность">
+		<label for="longing">Длительность</label>
+	</div>
+	<div class="form-label-group">
+		<input id="start" type="date" name="start" class="form-control" placeholder="Дата начала">
+		<label for="start">Дата начала</label>
+	</div>
+	<div class="form-label-group">
+		<input id="end" type="date" name="end" class="form-control" placeholder="Дата окончания">
+		<label for="end">Дата окончания</label>
+	</div>
+	<div class="form-label-group">
+		<select id="orgVal" name="org" class="selectize" placeholder="Выберите организатора"> 
+			<option selected disabled> Выберите организатора </option>
+			<% for(let item in orgs) { %>
+				<option value="<%- orgs[item].id %>">
+					<%- orgs[item].fio %>
+				</option>
+			<% } %>
+		</select>
+	</div>
+	<div class="form-label-group text-left" id="userLocation">
+		<select id="location" name="location" onchange="addLocation(event)" class="" placeholder="Выберите место проведения"> 
+			<option disabled selected value = ' '> Выберите место проведения </option>
+			<script type="text/javascript">
+				$(document).ready(function(){
+					$.ajax({
+						url: "/kurs/getLocations",
+						method: "post",
+						data: {
+							"id" : ""
+						},
+						complete: function(res) {
+							$("#location").append(res.responseText);
+							$("#location").selectize();
+						}
+					})
+				})							
+			</script>
+		</select>
+	</div>
+	<div class="form-label-group">
+		<select id="curator" name="curator" class=" selectize" placeholder="Выберите куратора"> 
+			<option selected disabled> Выберите куратора </option>
+			<% for(let item in preps) { %>
+				<option value="<%- preps[item].id %>">
+					<%- preps[item].fio %>
+				</option>
+			<% } %>
+		</select>
+	</div>
+	<div class="form-label-group">
+		<input id="max_group" type="number" name="max_group" class="form-control" placeholder="Размер группы">
+		<label for="max_group">Размер группы</label>
+	</div>
+
+	<div  class="form-label-group">
+	<label for="leads">Преподаватели</label>
+		<select id="leads" multiple name="leads" class="selectize" placeholder="Выберите преподавателей"> 
+			<option disabled> Выберите преподавателей </option>
+			<% for(let item in preps) { %>
+				<option value="<%- preps[item].id %>">
+					<%- preps[item].fio %>
+				</option>
+			<% } %>
+		</select>
+	</div>
+	<div class="form-label-group">
+		<input id="acc_num" type="text" name="acc_num" class="form-control" placeholder="Рассчётный номер">
+		<label for="acc_num">Рассчётный номер</label>
+	</div>
+	<div class="form-label-group">
+		<input id="cost" type="text" name="cost" class="form-control" placeholder="Стоимость">
+		<label for="cost">Стоимость</label>
+	</div>
+	<div class="form-label-group">
+		<input id="contract_num" type="text" name="contract_num" class="form-control" placeholder="Номер договора">
+		<label for="contract_num">Номер договора</label>
+	</div>
+	<div class="form-label-group">
+		<input id="notes" type="text" name="notes" class="form-control" placeholder="Заметки">
+		<label for="notes">Заметки</label>
+	</div>
+	<button class="btn btn-lg btn-dark btn-block shadow-sm mt-1" type="submit">Создать</button>
+</form>
+<section id="floatForm" class="floatForm pd-0 bg-white container text-center shadow-lg">
+	<%- partial('../inputAdress') %>
+</section>
+	
+
+	
+<script type="text/javascript">
+	$(document).ready((e) => {
+		$('.selectize').selectize();
+	})
+
+	var saveLocation = function() {
+		if (markRed($("#index"))){
+
+		} else if (markRed($("#region"))) {
+
+		} else if (markRed($("#city"))) {
+
+		} else if (markRed($("#street"))) {
+
+		} else {
+			console.log($("#index").val());
+			console.log($("#region").val());
+			console.log($("#city").val());
+			console.log($("#street").val());
+			console.log($("#house").val());
+			$.ajax({
+				url: "/save/address",
+				method: "post",
+				data: {
+					index: $("#index").val(),
+					region: $("#region").val(),
+					city: $("#city").val(),
+					street: $("#street").val(),
+					house: $("#house").val(),
+					room: $("#room").val(),
+				},
+				complete: function(res) {
+					if (true) {
+						selector = $("#location").selectize();
+						selector = selector[0].selectize;
+						selector.addOption({value: res.responseJSON.value, text: res.responseJSON.text});
+						selector.refreshOptions(true);
+						$("#floatForm")[0].removeAttribute('data-show');
+					} else {
+						console.error(500);
+					}
+				}
+			})
+			console.log("save");
+		}
+	}
+
+	var addLocation = function(e){
+		selector = $("#location").selectize();
+		selector = selector[0].selectize;
+		console.log(e);
+		if (e.target.value == 'nan') {
+			selector.setValue(' ', 1);
+			$("#floatForm")[0].setAttribute('data-show', '');
+			hideOnClickOutside($("#floatForm")[0]);
+		} else {
+			selector = $("#location").selectize();
+			selector = selector[0].selectize;
+		}
+	}
+</script>

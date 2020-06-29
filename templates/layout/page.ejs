@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title><%=blocks.title%></title>
+
+	<link rel="stylesheet" type="text/css" href="/vendor/bootstrap/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<link rel="stylesheet" type="text/css" href="/vendor/dadata/css/suggestions.css">
+	<link rel="stylesheet" type="text/css" href="/vendor/selectize/css/selectize.default.css">
+
+	<script type="text/javascript" src="/vendor/jQuery/jquery.js"></script>
+	<script type="text/javascript" src="/vendor/@popperjs/core/dist/umd/popper.js"></script>
+	<script type="text/javascript" src="/vendor/bootstrap/js/bootstrap.js"></script>
+	<script type="text/javascript" src="/vendor/dadata/js/jquery.suggestions.js"></script>
+	<script type="text/javascript" src="/vendor/selectize/js/standalone/selectize.js"></script>
+	<script type="text/javascript" src="/js/index.js"></script>
+</head>
+<body class="bg-light">
+	<header class="mb-3 shadow-sm">
+		<%-partial('../partials/topNav', {currentUser: currentUser})%>
+		<%-blocks.header%>
+	</header>
+	<section id="bodyForm" class="pd-0 bg-white container text-center shadow-sm">
+		<%-partial('../cover')%>
+	</section>
+	<section id="sideForm" class="pd-0 bg-white container text-center shadow-sm">
+		
+	</section>
+	<footer>
+		<%-blocks.foter%>
+	</footer>
+</body>
+</html>
