@@ -14,7 +14,7 @@
     "ejs": "^2.6.2",
     "ejs-locals": "^1.0.2",
     "excel4node": "^1.7.2",
-    "express": "~4.16.1",
+    "express": "~4.17.3",
     "express-formidable": "^1.2.0",
     "express-mysql-session": "^2.1.4",
     "express-session": "^1.17.1",
